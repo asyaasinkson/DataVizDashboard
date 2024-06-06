@@ -64,8 +64,6 @@ extract_ingredients_cleaned <- function(text) {
 
 # Dishes {data-orientation="rows"}
 
-## Row 1 {data-heigh="100"}
-
 ## Column {.tabset .tabset-fade data-width="650"}
 
 ### Map
