@@ -24,6 +24,8 @@ library(stringr)
 library(ggplot2)
 library(shinydashboard)
 library(RColorBrewer)
+library(wordcloud)
+library(tm)
 ```
 
 ```{r}
@@ -280,4 +282,21 @@ output$meatPieChart <- renderHighchart({
 highchartOutput("meatPieChart")
 
 
+```
+
+## Row 4 {data-height="10"}
+
+```{r}
+# Render word cloud of dish names
+output$dishWordCloud <- renderPlot({
+  dat <- data()  # Assuming data is loaded and available
+  wordcloud(words = dat$Dish,
+            min.freq = 1,  # Minimum frequency of a word to be included
+            max.words = 100,  # Maximum number of words to display
+            random.order = FALSE,  # Order of words in the cloud
+            colors = brewer.pal(8, "Dark2"))  # Color palette for the word cloud
+})
+
+# Display word cloud
+plotOutput("dishWordCloud")
 ```
