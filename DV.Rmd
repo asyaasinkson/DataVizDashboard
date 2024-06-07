@@ -53,7 +53,7 @@ extract_ingredients_cleaned <- function(text) {
   cleaned_list <- sapply(ingredients_list, function(x) {
     x <- str_remove_all(x, "\\d+\\s*(g|kg|ml|tbsp|tsp|cup|cups|oz|lbs?|pounds?|tablespoons?|teaspoons?|cloves?|pieces?)\\b|\\b(large|small|of)\\b|/")
     x <- str_remove_all(x, "\\b\\d+\\b")  # Remove standalone numbers
-    x <- str_remove_all(x, "\\(.*?\\)")  # Remove phrases in parentheses
+    #x <- str_remove_all(x, "\\(.*?\\)")  # Remove phrases in parentheses
     str_trim(x)
   })
   
