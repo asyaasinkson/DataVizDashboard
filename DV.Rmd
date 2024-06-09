@@ -68,7 +68,7 @@ extract_ingredients_cleaned <- function(text) {
 
 # Dishes {data-orientation="rows"}
 
-## Column {.tabset .tabset-fade data-width="650"}
+## Column {data-width="650"}
 
 ### Map
 
@@ -91,23 +91,6 @@ output$map <- renderLeaflet({
 
 leafletOutput("map")
 
-
-```
-
-### Datatable {data-height="600"}
-
-```{r}
-
-data_filt <- reactive({ data() %>% select(-Longitude, -Latitude) })
-
-output$table <- renderDataTable({
-  datatable(data_filt(),
-            options = list(pageLength = 10, autoWidth = TRUE),
-            filter = 'top',
-            class = 'cell-border stripe')
-})
-
-dataTableOutput("table")
 
 ```
 
@@ -173,6 +156,24 @@ output$ingredientsPieChart <- renderHighchart({
 })
 
 highchartOutput("ingredientsPieChart")
+```
+## Column {data-width="650"}
+
+### Datatable {data-height="600"}
+
+```{r}
+
+data_filt <- reactive({ data() %>% select(-Longitude, -Latitude) })
+
+output$table <- renderDataTable({
+  datatable(data_filt(),
+            options = list(pageLength = 10, autoWidth = TRUE),
+            filter = 'top',
+            class = 'cell-border stripe')
+})
+
+dataTableOutput("table")
+
 ```
 
 ## Row {data-height="120"}
@@ -285,27 +286,40 @@ highchartOutput("meatPieChart")
 
 
 ```
-
 ## Row 4 {data-height="10"}
-
+## Column {data-width="650"}
+### Dish Word Cloud
 ```{r}
-# Render word cloud of dish names
-output$dishWordCloud <- renderPlot({
-  dat <- data()  # Assuming data is loaded and available
-  wordcloud(words = dat$Dish,
-            min.freq = 1,  # Minimum frequency of a word to be included
-            max.words = 100,  # Maximum number of words to display
-            random.order = FALSE,  # Order of words in the cloud
-            colors = brewer.pal(8, "Dark2"))  # Color palette for the word cloud
-})
+selectInput("dishType", "Choose dish type:",
+            choices = list("All" = "all",
+                           "Contains Meat" = "meat",
+                           "Does Not Contain Meat" = "nomeat"))
 
-# Display word cloud
 plotOutput("dishWordCloud")
+
+output$dishWordCloud <- renderPlot({
+  req(input$dishType) 
+  dat <- data() 
+
+  if (input$dishType == "meat") {
+    filtered_data <- dat %>% filter(Contains_Meat == "Yes")
+  } else if (input$dishType == "nomeat") {
+    filtered_data <- dat %>% filter(Contains_Meat == "No")
+  } else {
+    filtered_data <- dat
+  }
+
+  wordcloud(words = filtered_data$Dish,
+            min.freq = 1,
+            max.words = 100,
+            random.order = FALSE,
+            colors = brewer.pal(8, "Dark2")) 
+})
 ```
 
 # About {data-orientation="rows"}
 
-## Row 3 {data-height="10"}
+<!-- ## Row 3 {data-height="10"} -->
 
 The project "Dishes Of The World" aims to provide information about dishes from around the world. For each country, the most popular national dish is selected. Users can interact with the data and get detailed information about recipes. The main components of the project include:
 
@@ -335,8 +349,5 @@ The project "Dishes Of The World" aims to provide information about dishes from 
 7. **General Statistics**:
    - Analysis of the most common ingredients used in recipes.
    - Distribution of meat and non-meat recipes (marker color on the map: red — contains meat, green — does not contain meat).
-
-8. **About the Project**:
-   - Additional information about the project and its authors.
 
 The project is designed for chefs, researchers, and anyone interested in international cuisine.
