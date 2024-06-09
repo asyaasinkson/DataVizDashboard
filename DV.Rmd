@@ -309,7 +309,7 @@ plotOutput("dishWordCloud")
 
 The project "Dishes Of The World" aims to provide information about dishes from around the world. For each country, the most popular national dish is selected. Users can interact with the data and get detailed information about recipes. The main components of the project include:
 
-1. **Map with Dishes**:
+1. ** Map with Dishes **:
    - An interactive map displays dishes from different countries.
    - Each dish is represented by a marker, with the color indicating whether the dish contains meat (red — contains meat, green — does not contain meat).
    - Clicking on a marker reveals a popup with detailed information about the dish, its description, and ingredients.
